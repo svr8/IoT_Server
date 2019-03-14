@@ -7,12 +7,12 @@ const serialport = require("serialport");
 const port = 8081;
 
 var sensorList = {
-    'S1': ['0'],
-    'S2': ['1'],
-    'S3': ['2'],
-    'S4': ['3'],
-    'S5': ['4'],
-    'S6': ['5']
+    'S1': [],
+    'S2': [],
+    'S3': [],
+    'S4': [],
+    'S5': [],
+    'S6': []
 }
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
@@ -78,13 +78,32 @@ app.get('/s6', function(req, res) {
 //     });
 // });
 
-// var arduinoPort = new serialport("/dev/ttyACM0", { // replace ttyACM0 with the right port on your computer
-//     baudRate: 9600,
-//     //parser: serialport.parsers.readline("\r\n")
-// });
-// arduinoPort.on( "data", function( chunk ) {
-//         sys.puts(chunk);
-//     });
+var arduinoPort = new serialport("/dev/ttyACM0", { // replace ttyACM0 with the right port on your computer
+    baudRate: 9600,
+    //parser: serialport.parsers.readline("\r\n")
+});
+
+var flag = 0;
+var buff = "";
+arduinoPort.open(function(){
+	arduinoPort.on('data', function(data){
+		let str = data.toString('utf8');
+//		console.log(str);
+		buff = buff + str;
+		flag++;
+		if(flag == 3) {
+			let start = buff.indexOf("S");
+			let end = buff.indexOf("#");
+			let data = buff.substring(start,end);
+			let sensor_prefix = buff.substring(start, start+2);
+			let sensor_value = buff.substring(start+3, end);
+			sensorList[sensor_prefix].push(sensor_value);	
+			buff = buff.substring(end+1);
+			flag = 0;
+		}
+	});
+});
+
 
 
 var server = app.listen(port, function () {
@@ -92,4 +111,8 @@ var server = app.listen(port, function () {
    var port = server.address().port
    
    console.log(`http://localhost:${port}`);
-})
+});
+
+function isNumeric(num){
+  return !isNaN(num)
+}
