@@ -3,18 +3,18 @@ $(document).ready(function() {
 	$("#dashboard-wrap").hide();
 
 	const sensor_title = [
-		'Ultrasonic Sensor',
-		'Sensor 2',
-		'Sensor 3',
-		'Sensor 4',
-		'Sensor 5'
+		'Ultrasonic Sensor 1',
+		'Ultrasonic Sensor 2',
+		'Heart Rate',
+		'Temperature: Battery',
+		'Temperature: Motor'
 	];
 	const sensor_unit = [
 		'ft',
 		'ft',
-		'ft',
-		'ft',
-		'ft'		
+		'bpm',
+		'°C',
+		'°C'		
 	];
 	let theta = 5;
 	
