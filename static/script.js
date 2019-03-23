@@ -1,22 +1,23 @@
 $(document).ready(function() {
-	$("#intro").hide();
 	$("#dashboard-wrap").hide();
+	$("#intro").hide();
+
 
 	const sensor_title = [
-		'Ultrasonic Sensor',
-		'Sensor 2',
-		'Sensor 3',
-		'Sensor 4',
-		'Sensor 5'
+		'Ultrasonic Sensor Left',
+		'Ultrasonic Sensor Right',
+		'Heart Rate',
+		'Temperature: Battery',
+		'Temperature: Motor'
 	];
 	const sensor_unit = [
 		'ft',
 		'ft',
-		'ft',
-		'ft',
-		'ft'		
+		'bpm',
+		'°C',
+		'°C'		
 	];
-	let theta = 5;
+	let theta = 1;
 	
 	let alarm_status = false;
 	const sensorCount = 5;
@@ -44,27 +45,35 @@ $(document).ready(function() {
 	}
 
 	const reset_alarm = function() {
-		$(".sensor:nth-child(6)").removeClass('triggered');
-		$(".sensor:nth-child(6)").addClass('not-triggered');
+		$(".sensor:nth-child(5)").removeClass('triggered');
+		$(".sensor:nth-child(5)").addClass('not-triggered');
 	};
 	const set_alarm = function() {
-		$(".sensor:nth-child(6)").removeClass('not-triggered');
-		$(".sensor:nth-child(6)").addClass('triggered');
+		$(".sensor:nth-child(5)").removeClass('not-triggered');
+		$(".sensor:nth-child(5)").addClass('triggered');
 	}
 	
 
 	setInterval(function(){ 
 		
 	for(let i=0; i<sensorCount;i++) {
-		let sensorID = `S${(i+1)}`;
+		let sensorID = `s${(i+1)}`;
 		let domID = i;
 		getSensorValue(sensorID, function(data){
-			setSensorValue(domID, data);
+			if(data && data!='undefined')
+				setSensorValue(domID, data);
+			//if(i==2) console.log(data);
 		});
 	}
 	
-	let ultrasonic_val = Number((document.getElementsByClassName("sensor-value")[0].innerHTML).trim());
-	let status = ultrasonic_val <= theta;
+	/*
+	getSensorValue('s1', function(data) {
+		console.log(data);
+	});*/
+	
+	let ultrasonic_val_left = Number((document.getElementsByClassName("sensor-value")[0].innerHTML).trim());
+	let ultrasonic_val_right = Number((document.getElementsByClassName("sensor-value")[1].innerHTML).trim());
+	let status = ultrasonic_val_left <= theta || ultrasonic_val_right <= theta;
 	if(status && !alarm_status) {
 		alarm_status = true;
 		set_alarm();
@@ -72,7 +81,7 @@ $(document).ready(function() {
 		alarm_status = false;
 		reset_alarm();
 	}
-	}, 250);
+	}, 100);
 
 	$("#intro").fadeIn(1200, "linear", function(){
 		$("#intro").delay(600).fadeOut(1200, "linear", function(){
