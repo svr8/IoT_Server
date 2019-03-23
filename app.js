@@ -88,19 +88,19 @@ var buff = "";
 arduinoPort.open(function(){
 	arduinoPort.on('data', function(data){
 		let str = data.toString('utf8');
-//		console.log(str);
-		buff = buff + str;
-		flag++;
-		if(flag == 3) {
-			let start = buff.indexOf("S");
-			let end = buff.indexOf("#");
-			let data = buff.substring(start,end);
-			let sensor_prefix = buff.substring(start, start+2);
-			let sensor_value = buff.substring(start+3, end);
-			sensorList[sensor_prefix].push(sensor_value);	
-			buff = buff.substring(end+1);
-			flag = 0;
-		}
+		console.log(str);
+		// buff = buff + str;
+		// flag++;
+		// if(flag == 3) {
+		// 	let start = buff.indexOf("S");
+		// 	let end = buff.indexOf("#");
+		// 	let data = buff.substring(start,end);
+		// 	let sensor_prefix = buff.substring(start, start+2);
+		// 	let sensor_value = buff.substring(start+3, end);
+		// 	sensorList[sensor_prefix].push(sensor_value);	
+		// 	buff = buff.substring(end+1);
+		// 	flag = 0;
+		// }
 	});
 });
 
