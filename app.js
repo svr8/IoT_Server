@@ -29,8 +29,6 @@ app.get('/s1', function(req, res) {
     let value = arr[arr.length-1];
     sensorList['S1'] = [];
     res.send(`${value}`);
-    /*res.writeHead(200, {"Content-Type":"application/json"});
-    res.write(JSON.stringify({"val": value}));*/
 });
 
 app.get('/s2', function(req, res) {
@@ -62,7 +60,7 @@ app.get('/s5', function(req, res) {
 });
 
 
-/*
+/* // List all ports
  serialport.list(function (err, ports) {
      ports.forEach(function(port) {
 
@@ -72,6 +70,7 @@ app.get('/s5', function(req, res) {
          console.log("serialNumber: " + port.serialNumber);
          console.log("vendorId: " + port.vendorId);
          console.log("productId: " + port.productId);
+         console.log("-----------------");
      });
  });*/
 
